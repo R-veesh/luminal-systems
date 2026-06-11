@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #6FCF97;
+  --color-primary-dark: #2FA084;
+  --color-primary-darker: #1F6F5F;
+  --color-light: #EEEEEE;
+  --color-dark: #000000;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--color-dark);
+  background: var(--color-light);
+}
+
+::selection {
+  background: var(--color-primary);
+  color: #000;
+}
