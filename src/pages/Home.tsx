@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, Zap, Shield, TrendingUp, Star } from "lucide-react";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { ArrowRight, Zap, Shield, TrendingUp, Star, Play } from "lucide-react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { GlassCard } from "../components/ui/GlassCard";
 import SectionHeading from "../components/ui/SectionHeading";
 import StatsCounter from "../components/ui/StatsCounter";
@@ -28,6 +28,143 @@ const features = [
     color: "from-blue-400 to-indigo-500",
   },
 ];
+
+function ScrollVideo() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const enteredRef = useRef(false);
+  const playedRef = useRef(false);
+
+  const isInView = useInView(sectionRef, { margin: "-10%" });
+
+  useEffect(() => {
+    if (isInView && !enteredRef.current) enteredRef.current = true;
+  }, [isInView]);
+
+  useEffect(() => {
+    if (!ready || playedRef.current) return;
+    const onScroll = () => {
+      if (enteredRef.current && !playedRef.current) {
+        playedRef.current = true;
+        videoRef.current?.play();
+        setPlaying(true);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [ready]);
+
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
+    const onTime = () => {
+      if (vid.duration) setProgress(vid.currentTime / vid.duration);
+    };
+    const onMeta = () => setReady(true);
+    const onEnd = () => document.getElementById("video-next")?.scrollIntoView({ behavior: "smooth" });
+    vid.addEventListener("timeupdate", onTime);
+    vid.addEventListener("loadedmetadata", onMeta);
+    vid.addEventListener("ended", onEnd);
+    return () => {
+      vid.removeEventListener("timeupdate", onTime);
+      vid.removeEventListener("loadedmetadata", onMeta);
+      vid.removeEventListener("ended", onEnd);
+    };
+  }, []);
+
+  const circleLen = 2 * Math.PI * 48;
+
+  return (
+    <section ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 via-transparent to-gray-50/50" />
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-dark"
+        >
+          <video
+            ref={videoRef}
+            preload="auto"
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/videos/promo.mp4" type="video/mp4" />
+          </video>
+
+          {!playing ? (
+            <div className="absolute inset-0 flex items-center justify-center bg-dark/50">
+              <div className="relative flex flex-col items-center gap-2">
+                <svg width="112" height="112" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                  <circle
+                    cx="56" cy="56" r="48"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.15)"
+                    strokeWidth="3"
+                  />
+                  <motion.circle
+                    cx="56" cy="56" r="48"
+                    fill="none"
+                    stroke="rgb(37,99,235)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={circleLen}
+                    strokeDashoffset={circleLen * 0.75}
+                    style={{ rotate: -90, transformOrigin: "center" }}
+                    animate={{ strokeDashoffset: [circleLen * 0.75, circleLen * 0.65] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </svg>
+                <div className="w-16 h-16 bg-white/20 backdrop-blur rounded-full flex items-center justify-center z-10">
+                  <Play size={28} className="text-white ml-1" />
+                </div>
+                <span className="text-white/80 text-xs font-medium tracking-wider uppercase z-10">
+                  Scroll to Watch
+                </span>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="absolute bottom-4 left-4 right-4">
+                <div className="h-1 bg-white/20 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-primary rounded-full"
+                    style={{ scaleX: progress, transformOrigin: "left" }}
+                  />
+                </div>
+              </div>
+              <div className="absolute top-4 right-4">
+                <svg width="40" height="40">
+                  <circle
+                    cx="20" cy="20" r="17"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="3"
+                  />
+                  <circle
+                    cx="20" cy="20" r="17"
+                    fill="none"
+                    stroke="rgb(37,99,235)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeDasharray={2 * Math.PI * 17}
+                    strokeDashoffset={2 * Math.PI * 17 * (1 - progress)}
+                    style={{ rotate: -90, transformOrigin: "center" }}
+                  />
+                </svg>
+              </div>
+            </>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 const testimonials = [
   {
@@ -149,7 +286,10 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      {/* Scroll-driven promo video — place promo.mp4 in public/videos/ */}
+      <ScrollVideo />
+
+      <section id="video-next" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <SectionHeading
           title="Why Luminal Systems?"
           subtitle="We combine cutting-edge technology with proven design principles to deliver exceptional digital experiences."
