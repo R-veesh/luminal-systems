@@ -64,14 +64,27 @@ function ScrollVideo() {
     vid.addEventListener("ended", onEnd);
 
     const onScroll = () => {
-      if (playedRef.current) return;
       const rect = sectionRef.current?.getBoundingClientRect();
       if (!rect) return;
-      if (!seenRef.current) {
-        if (rect.top < window.innerHeight && rect.bottom > 0) seenRef.current = true;
+
+      if (rect.bottom < 0 || rect.top > window.innerHeight) {
+        if (playedRef.current || seenRef.current) {
+          seenRef.current = false;
+          playedRef.current = false;
+          vid.pause();
+          vid.currentTime = 0;
+          setPlaying(false);
+          setProgress(0);
+        }
         return;
       }
-      if (readyRef.current) {
+
+      if (!seenRef.current) {
+        seenRef.current = true;
+        return;
+      }
+
+      if (readyRef.current && !playedRef.current) {
         playedRef.current = true;
         vid.play();
         setPlaying(true);
