@@ -51,11 +51,13 @@ export default function Checkout() {
       }
     }
 
+    const accountCreated = !!(createAccount && form.email);
     sessionStorage.setItem("orderInfo", JSON.stringify({
       plan: plan.name,
       price,
       orderId,
       email: form.email,
+      accountCreated,
     }));
 
     const amount = price.toFixed(2);
@@ -66,7 +68,7 @@ export default function Checkout() {
     const inputs = {
       merchant_id: merchantId,
       return_url: origin + "/thank-you?order=" + orderId,
-      cancel_url: origin + "/pricing",
+      cancel_url: origin + "/payment-failed",
       notify_url: origin + "/api/payment-notify",
       order_id: orderId,
       items: `${plan.name} - ${yearly ? "Yearly" : "Monthly"}`,

@@ -45,6 +45,21 @@ try {
     }
 
     // GET — list contacts with optional filters
+    $id = (int)($_GET['id'] ?? 0);
+
+    if ($id) {
+        // Fetch single contact
+        $stmt = $pdo->prepare("SELECT * FROM contacts WHERE id = ?");
+        $stmt->execute([$id]);
+        $contact = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($contact) {
+            echo json_encode(['success' => true, 'data' => [$contact]]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Contact not found']);
+        }
+        exit;
+    }
+
     $page = max(1, (int)($_GET['page'] ?? 1));
     $limit = min(50, max(1, (int)($_GET['limit'] ?? 20)));
     $offset = ($page - 1) * $limit;
@@ -77,10 +92,13 @@ try {
     $countStmt->execute($params);
     $total = (int)$countStmt->fetchColumn();
 
-    // Fetch page
+    // Fetch page (bind LIMIT/OFFSET as integers for MariaDB compatibility)
     $stmt = $pdo->prepare("SELECT * FROM contacts $whereClause ORDER BY created_at DESC LIMIT ? OFFSET ?");
-    $allParams = [...$params, $limit, $offset];
-    $stmt->execute($allParams);
+    $i = 1;
+    foreach ($params as $p) { $stmt->bindValue($i++, $p); }
+    $stmt->bindValue($i++, $limit, PDO::PARAM_INT);
+    $stmt->bindValue($i, $offset, PDO::PARAM_INT);
+    $stmt->execute();
     $contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode([

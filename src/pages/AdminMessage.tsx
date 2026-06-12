@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail, Send, CheckCircle, Clock, MessageSquare } from "lucide-react";
+import { ArrowLeft, Mail, Send, CheckCircle, Clock, MessageSquare, Shield } from "lucide-react";
 import { GlassCard } from "../components/ui/GlassCard";
 import { useAuth } from "../context/AuthContext";
 
@@ -29,13 +29,37 @@ export default function AdminMessage() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [unauthorized, setUnauthorized] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
+  // Auth check
+  useEffect(() => {
+    if (!user?.email || authChecked) return;
+    const doAuth = async () => {
+      try {
+        const res = await fetch(API + "/admin/login.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email, uid: user.uid }),
+        });
+        const data = await res.json();
+        if (!data.success) setUnauthorized(true);
+      } catch {
+        setUnauthorized(true);
+      } finally {
+        setAuthChecked(true);
+      }
+    };
+    doAuth();
+  }, [user?.email, user?.uid, authChecked]);
+
+  // Fetch message
   useEffect(() => {
     const email = user?.email;
-    if (!email || !id) return;
+    if (!email || !id || !authChecked || unauthorized) return;
     const fetchMessage = async () => {
       try {
-        const res = await fetch(API + `/admin/contacts.php?id=${id}&limit=1`, {
+        const res = await fetch(API + `/admin/contacts.php?id=${id}`, {
           headers: { "X-Admin-Email": email },
         });
         const data = await res.json();
@@ -56,7 +80,7 @@ export default function AdminMessage() {
       }
     };
     fetchMessage();
-  }, [id, user?.email]);
+  }, [id, user?.email, authChecked, unauthorized]);
 
   const handleReply = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,6 +110,18 @@ export default function AdminMessage() {
       <div className="text-center py-20">
         <h1 className="text-2xl font-bold text-dark mb-4">Please sign in</h1>
         <p className="text-gray-500">You need to sign in to access the admin panel.</p>
+      </div>
+    );
+  }
+
+  if (unauthorized) {
+    return (
+      <div className="text-center py-20">
+        <div className="w-16 h-16 bg-error/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <Shield size={32} className="text-error" />
+        </div>
+        <h1 className="text-2xl font-bold text-dark mb-4">Access Denied</h1>
+        <p className="text-gray-500">Your account is not authorized as admin.</p>
       </div>
     );
   }

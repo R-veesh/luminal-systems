@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Search, ChevronLeft, ChevronRight, MessageSquare, Eye, Filter } from "lucide-react";
+import { Mail, Search, ChevronLeft, ChevronRight, MessageSquare, Eye, Filter, Shield } from "lucide-react";
 import { GlassCard } from "../components/ui/GlassCard";
 import { staggerContainer, staggerItem } from "../lib/animations";
 import { useAuth } from "../context/AuthContext";
@@ -31,10 +31,36 @@ export default function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(true);
+  const [unauthorized, setUnauthorized] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
+  // Step 1: Authenticate with backend via login.php
   useEffect(() => {
-    if (!user?.email) return;
+    if (!user?.email || authChecked) return;
+    const doAuth = async () => {
+      try {
+        const res = await fetch(API + "/admin/login.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user.email, uid: user.uid }),
+        });
+        const data = await res.json();
+        if (!data.success) {
+          setUnauthorized(true);
+        }
+      } catch {
+        setUnauthorized(true);
+      } finally {
+        setAuthChecked(true);
+      }
+    };
+    doAuth();
+  }, [user?.email, user?.uid, authChecked]);
+
+  // Step 2: Fetch contacts once authenticated
+  useEffect(() => {
+    if (!user?.email || !authChecked || unauthorized) return;
     let active = true;
     const fetchContacts = async () => {
       setLoading(true);
@@ -63,7 +89,7 @@ export default function AdminDashboard() {
     };
     fetchContacts();
     return () => { active = false; };
-  }, [page, search, status, user?.email, refreshKey]);
+  }, [page, search, status, user?.email, refreshKey, authChecked, unauthorized]);
 
   const toggleStatus = async (id: number, field: "is_read" | "is_replied", value: number) => {
     const email = user?.email;
@@ -90,7 +116,20 @@ export default function AdminDashboard() {
     return (
       <div className="text-center py-20">
         <h1 className="text-2xl font-bold text-dark mb-4">Please sign in</h1>
-        <p className="text-gray-500">You need to sign in to access the admin panel.</p>
+        <p className="text-gray-500">You need to sign in with an admin account to access the admin panel.</p>
+      </div>
+    );
+  }
+
+  if (unauthorized) {
+    return (
+      <div className="text-center py-20">
+        <div className="w-16 h-16 bg-error/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <Shield size={32} className="text-error" />
+        </div>
+        <h1 className="text-2xl font-bold text-dark mb-4">Access Denied</h1>
+        <p className="text-gray-500 mb-2">Your account (<strong>{user.email}</strong>) is not authorized as admin.</p>
+        <p className="text-gray-400 text-sm">Contact the site administrator to add your email to the admin list.</p>
       </div>
     );
   }

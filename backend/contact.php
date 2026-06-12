@@ -35,6 +35,7 @@ $name = trim($input['name'] ?? '');
 $email = trim($input['email'] ?? '');
 $subject = trim($input['subject'] ?? '');
 $message = trim($input['message'] ?? '');
+$userUid = trim($input['user_uid'] ?? '');
 
 if (!$name || !$email || !$subject || !$message) {
     http_response_code(400);
@@ -59,9 +60,9 @@ try {
     );
 
     $stmt = $pdo->prepare(
-        "INSERT INTO contacts (name, email, subject, message, created_at) VALUES (?, ?, ?, ?, NOW())"
+        "INSERT INTO contacts (name, email, subject, message, user_uid, created_at) VALUES (?, ?, ?, ?, ?, NOW())"
     );
-    $stmt->execute([$name, $email, $subject, $message]);
+    $stmt->execute([$name, $email, $subject, $message, $userUid ?: null]);
     $dbSuccess = true;
 } catch (PDOException $e) {
     error_log("DB Error: " . $e->getMessage());

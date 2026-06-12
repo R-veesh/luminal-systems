@@ -1,8 +1,10 @@
 import { useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Lottie from "lottie-react";
 import { GlassCard } from "../components/ui/GlassCard";
 import { staggerContainer, staggerItem } from "../lib/animations";
+import animationData from "../assets/payment-ok.json";
 
 export default function ThankYou() {
   const location = useLocation();
@@ -22,19 +24,12 @@ export default function ThankYou() {
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
       <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
+        className="mx-auto mb-6 w-48 h-48"
       >
-        <div className="w-24 h-24 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-primary/20">
-          <motion.div
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            <CheckCircle className="text-white" size={48} />
-          </motion.div>
-        </div>
+        <Lottie animationData={animationData} loop={false} />
       </motion.div>
 
       {data.accountCreated && data.email && (

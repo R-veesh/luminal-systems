@@ -6,6 +6,7 @@ import SectionHeading from "../components/ui/SectionHeading";
 import Accordion from "../components/ui/Accordion";
 import { staggerContainer, staggerItem, fadeInRight } from "../lib/animations";
 import { AnimatedSection } from "../lib/animations-components";
+import { useAuth } from "../context/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_BASE_URL || "/api";
 
@@ -16,6 +17,7 @@ const faqs = [
 ];
 
 export default function Contact() {
+  const { user } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -42,7 +44,7 @@ export default function Contact() {
       await fetch(API_URL + "/contact.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, user_uid: user?.uid || "" }),
       });
     } catch {
       // Silently fail — backend might be offline

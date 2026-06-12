@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut, User as UserIcon, Shield } from "lucide-react";
+import { Menu, X, LogOut, User as UserIcon, Shield, Mail } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 const ADMIN_EMAILS = ["admin@luminalsystems.lk"];
@@ -104,6 +104,13 @@ export default function Header() {
                         <p className="text-sm font-medium text-dark truncate">{user.displayName || "User"}</p>
                         <p className="text-xs text-gray-500 truncate">{user.email}</p>
                       </div>
+                      <Link
+                        to="/my-messages"
+                        onClick={() => setShowDropdown(false)}
+                        className="flex items-center gap-2 px-4 py-3 text-sm text-gray-600 hover:bg-primary/10 hover:text-primary-darker transition-colors"
+                      >
+                        <Mail size={16} /> My Messages
+                      </Link>
                       {ADMIN_EMAILS.includes(user.email || "") && (
                         <Link
                           to="/admin"
@@ -193,6 +200,13 @@ export default function Header() {
                         <p className="text-gray-500 text-xs truncate">{user.email}</p>
                       </div>
                     </div>
+                    <Link
+                      to="/my-messages"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-600 hover:bg-primary/10 hover:text-primary-darker rounded-lg w-full transition-colors"
+                    >
+                      <Mail size={16} /> My Messages
+                    </Link>
                     {ADMIN_EMAILS.includes(user.email || "") && (
                       <Link
                         to="/admin"

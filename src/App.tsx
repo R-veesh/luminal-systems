@@ -13,8 +13,10 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 const Auth = lazy(() => import("./pages/Auth"));
+const PaymentFailed = lazy(() => import("./pages/PaymentFailed"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const AdminMessage = lazy(() => import("./pages/AdminMessage"));
+const MyMessages = lazy(() => import("./pages/MyMessages"));
 
 export default function App() {
   return (
@@ -35,6 +37,8 @@ export default function App() {
               <Route path="signup" element={<Auth mode="signup" />} />
               <Route path="admin" element={<AdminDashboard />} />
               <Route path="admin/message/:id" element={<AdminMessage />} />
+              <Route path="my-messages" element={<MyMessages />} />
+              <Route path="payment-failed" element={<PaymentFailed />} />
             </Route>
           </Routes>
         </Suspense>
