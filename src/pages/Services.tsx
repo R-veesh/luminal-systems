@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   Globe,
   ShoppingCart,
@@ -9,11 +10,16 @@ import {
   Palette,
   Rocket,
 } from "lucide-react";
+import { GlassCard } from "../components/ui/GlassCard";
+import SectionHeading from "../components/ui/SectionHeading";
+import { staggerContainer, staggerItem, fadeInUp } from "../lib/animations";
+import { AnimatedSection } from "../lib/animations-components";
 
 const services = [
   {
     icon: Globe,
     title: "Web Development",
+    gradient: "from-blue-400 to-indigo-500",
     features: [
       "Custom React/Next.js applications",
       "Responsive, mobile-first design",
@@ -24,6 +30,7 @@ const services = [
   {
     icon: ShoppingCart,
     title: "E-Commerce Solutions",
+    gradient: "from-green-400 to-emerald-500",
     features: [
       "Full e-commerce store setup",
       "Payment gateway integration",
@@ -34,6 +41,7 @@ const services = [
   {
     icon: BarChart3,
     title: "Digital Strategy",
+    gradient: "from-purple-400 to-pink-500",
     features: [
       "SEO optimization & analytics",
       "Conversion rate optimization",
@@ -44,6 +52,7 @@ const services = [
   {
     icon: Smartphone,
     title: "Mobile Optimization",
+    gradient: "from-orange-400 to-red-500",
     features: [
       "Progressive Web Apps (PWAs)",
       "Cross-platform compatibility",
@@ -79,66 +88,76 @@ const steps = [
 export default function Services() {
   return (
     <div>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold text-dark mb-6">
-          What We Deliver
-        </h1>
-        <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          From concept to launch, we provide end-to-end digital services that
-          drive real business results. Every solution is crafted with cutting-edge
-          technology, clean code, and a relentless focus on user experience.
-        </p>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <AnimatedSection>
+          <h1 className="text-4xl sm:text-5xl font-bold text-dark mb-6">
+            What <span className="text-gradient">We Deliver</span>
+          </h1>
+          <p className="text-lg text-gray-500 max-w-3xl mx-auto leading-relaxed">
+            From concept to launch, we provide end-to-end digital services that
+            drive real business results. Every solution is crafted with cutting-edge
+            technology, clean code, and a relentless focus on user experience.
+          </p>
+        </AnimatedSection>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="grid md:grid-cols-2 gap-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
+          className="grid md:grid-cols-2 gap-8"
+        >
           {services.map((service) => (
-            <div
-              key={service.title}
-              className="backdrop-blur-md bg-white/50 border border-white/30 rounded-2xl p-8 hover:shadow-xl transition-all group"
-            >
-              <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary/30 transition-colors">
-                <service.icon className="text-primary-darker" size={24} />
-              </div>
-              <h3 className="text-xl font-semibold text-dark mb-4">
-                {service.title}
-              </h3>
-              <ul className="space-y-2 mb-6">
-                {service.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-gray-600 text-sm">
-                    <span className="text-primary-darker mt-1">•</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-1 text-primary-darker font-medium text-sm hover:gap-2 transition-all"
-              >
-                Learn More <ArrowRight size={16} />
-              </Link>
-            </div>
+            <motion.div key={service.title} variants={staggerItem}>
+              <GlassCard className="p-8 group h-full">
+                <div className={`w-14 h-14 bg-gradient-to-br ${service.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg`}>
+                  <service.icon className="text-white" size={26} />
+                </div>
+                <h3 className="text-xl font-semibold text-dark mb-4">{service.title}</h3>
+                <ul className="space-y-2.5 mb-6">
+                  {service.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5 text-gray-500 text-sm">
+                      <span className="w-1.5 h-1.5 bg-primary-darker rounded-full mt-2 shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-1 text-primary-darker font-medium text-sm group/link"
+                >
+                  Learn More
+                  <ArrowRight size={16} className="transition-transform group-hover/link:translate-x-1" />
+                </Link>
+              </GlassCard>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
-      <section className="bg-white/50 backdrop-blur-md py-20">
+      <section className="bg-gray-50/50 py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-dark text-center mb-12">
-            How We Deliver
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <SectionHeading title="How We Deliver" subtitle="Our proven process from start to success." />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-4">
             {steps.map((step, i) => (
-              <div key={step.title} className="text-center">
-                <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mx-auto mb-4 relative">
-                  <step.icon className="text-primary-darker" size={28} />
-                  <span className="absolute -top-2 -right-2 w-6 h-6 bg-primary-darker text-white rounded-full text-xs flex items-center justify-center font-bold">
-                    {i + 1}
-                  </span>
+              <AnimatedSection key={step.title} variant={fadeInUp} delay={i * 0.1}>
+                <div className="text-center">
+                  <div className="relative inline-block mb-5">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${
+                      ["from-blue-400 to-indigo-500", "from-purple-400 to-pink-500", "from-green-400 to-emerald-500", "from-orange-400 to-red-500"][i]
+                    } rounded-2xl flex items-center justify-center shadow-lg`}>
+                      <step.icon className="text-white" size={28} />
+                    </div>
+                    <span className="absolute -top-2 -right-2 w-7 h-7 bg-dark text-white rounded-full text-xs flex items-center justify-center font-bold shadow-lg">
+                      {i + 1}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-dark mb-2">{step.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
                 </div>
-                <h3 className="font-semibold text-dark mb-2">{step.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{step.desc}</p>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>

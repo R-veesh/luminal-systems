@@ -1,0 +1,7 @@
+{
+    "name": "luminal-systems/backend",
+    "description": "Luminal Systems PHP Backend",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

@@ -1,6 +1,8 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout/Layout";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -10,32 +12,33 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
-
-function Loading() {
-  return (
-    <div className="min-h-[60vh] flex items-center justify-center">
-      <div className="w-8 h-8 border-4 border-primary/30 border-t-primary-darker rounded-full animate-spin" />
-    </div>
-  );
-}
+const Auth = lazy(() => import("./pages/Auth"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminMessage = lazy(() => import("./pages/AdminMessage"));
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<Loading />}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="services" element={<Services />} />
-            <Route path="how-it-works" element={<HowItWorks />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="pricing" element={<Pricing />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="thank-you" element={<ThankYou />} />
-          </Route>
-        </Routes>
-      </Suspense>
+      <AuthProvider>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="services" element={<Services />} />
+              <Route path="how-it-works" element={<HowItWorks />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="pricing" element={<Pricing />} />
+              <Route path="checkout" element={<Checkout />} />
+              <Route path="thank-you" element={<ThankYou />} />
+              <Route path="login" element={<Auth mode="login" />} />
+              <Route path="signup" element={<Auth mode="signup" />} />
+              <Route path="admin" element={<AdminDashboard />} />
+              <Route path="admin/message/:id" element={<AdminMessage />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
