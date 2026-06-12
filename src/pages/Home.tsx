@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Zap, Shield, TrendingUp, Star, Play } from "lucide-react";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import { GlassCard } from "../components/ui/GlassCard";
 import SectionHeading from "../components/ui/SectionHeading";
 import StatsCounter from "../components/ui/StatsCounter";
@@ -33,45 +33,57 @@ function ScrollVideo() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
-  const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
-  const enteredRef = useRef(false);
+  const seenRef = useRef(false);
+  const readyRef = useRef(false);
   const playedRef = useRef(false);
-
-  const isInView = useInView(sectionRef, { margin: "-10%" });
-
-  useEffect(() => {
-    if (isInView && !enteredRef.current) enteredRef.current = true;
-  }, [isInView]);
-
-  useEffect(() => {
-    if (!ready || playedRef.current) return;
-    const onScroll = () => {
-      if (enteredRef.current && !playedRef.current) {
-        playedRef.current = true;
-        videoRef.current?.play();
-        setPlaying(true);
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [ready]);
 
   useEffect(() => {
     const vid = videoRef.current;
     if (!vid) return;
+
+    if (vid.readyState >= 1) readyRef.current = true;
+
+    const onMeta = () => {
+      readyRef.current = true;
+      if (seenRef.current && !playedRef.current) {
+        playedRef.current = true;
+        vid.play();
+        setPlaying(true);
+      }
+    };
     const onTime = () => {
       if (vid.duration) setProgress(vid.currentTime / vid.duration);
     };
-    const onMeta = () => setReady(true);
     const onEnd = () => document.getElementById("video-next")?.scrollIntoView({ behavior: "smooth" });
+
+    if (vid.readyState < 1) vid.addEventListener("loadedmetadata", onMeta);
+    else onMeta();
+
     vid.addEventListener("timeupdate", onTime);
-    vid.addEventListener("loadedmetadata", onMeta);
     vid.addEventListener("ended", onEnd);
+
+    const onScroll = () => {
+      if (playedRef.current) return;
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      if (!seenRef.current) {
+        if (rect.top < window.innerHeight && rect.bottom > 0) seenRef.current = true;
+        return;
+      }
+      if (readyRef.current) {
+        playedRef.current = true;
+        vid.play();
+        setPlaying(true);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
-      vid.removeEventListener("timeupdate", onTime);
       vid.removeEventListener("loadedmetadata", onMeta);
+      vid.removeEventListener("timeupdate", onTime);
       vid.removeEventListener("ended", onEnd);
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
@@ -90,12 +102,11 @@ function ScrollVideo() {
         >
           <video
             ref={videoRef}
+            src="/videos/promo.mp4"
             preload="auto"
             playsInline
             className="w-full h-full object-cover"
-          >
-            <source src="/videos/promo.mp4" type="video/mp4" />
-          </video>
+          />
 
           {!playing ? (
             <div className="absolute inset-0 flex items-center justify-center bg-dark/50">
