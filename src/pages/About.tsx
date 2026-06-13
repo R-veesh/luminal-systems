@@ -6,6 +6,7 @@ import StatsCounter from "../components/ui/StatsCounter";
 import { staggerContainer, staggerItem, fadeInLeft, fadeInRight } from "../lib/animations";
 import { AnimatedSection } from "../lib/animations-components";
 import { Link } from "react-router-dom";
+import TeamSection from "../components/team/TeamSection";
 
 const values = [
   {
@@ -26,15 +27,6 @@ const values = [
     desc: "We don't just meet standards — we set them. Quality is non-negotiable in everything we build.",
     gradient: "from-purple-400 to-pink-500",
   },
-];
-
-const team = [
-  { name: "Sarah Chen", role: "CEO & Founder", gradient: "from-primary to-accent" },
-  { name: "Marcus Rivera", role: "CTO", gradient: "from-accent to-accent-dark" },
-  { name: "Aisha Patel", role: "Lead Designer", gradient: "from-primary-dark to-primary" },
-  { name: "James Okonkwo", role: "Head of Engineering", gradient: "from-accent to-primary" },
-  { name: "Yuki Tanaka", role: "Marketing Director", gradient: "from-primary to-primary-dark" },
-  { name: "Priya Sharma", role: "Customer Success", gradient: "from-accent-dark to-accent" },
 ];
 
 const timeline = [
@@ -143,35 +135,7 @@ export default function About() {
         </motion.div>
       </section>
 
-      <section className="bg-gray-50/50 py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading title="Meet the Team" subtitle="The people behind Luminal Systems." />
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={staggerContainer}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {team.map((member) => (
-              <motion.div key={member.name} variants={staggerItem}>
-                <GlassCard className="p-6 text-center">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className={`w-20 h-20 bg-gradient-to-br ${member.gradient} rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg`}
-                  >
-                    <span className="text-white text-2xl font-bold">
-                      {member.name.split(" ").map(n => n[0]).join("")}
-                    </span>
-                  </motion.div>
-                  <h3 className="text-lg font-semibold text-dark">{member.name}</h3>
-                  <p className="text-gray-400 text-sm">{member.role}</p>
-                </GlassCard>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      <TeamSection />
 
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
