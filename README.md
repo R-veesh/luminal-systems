@@ -1,5 +1,7 @@
 # Luminal Systems
 
+🔗 **Live:** [luminal-systems-f6b13.web.app](https://luminal-systems-f6b13.web.app)
+
 A clean, professional marketing website with e-commerce checkout flow built with React, TypeScript, and Vite.
 
 ## Tech Stack
@@ -124,7 +126,7 @@ src/
 
 ## Deployment
 
-Frontend can be deployed on Vercel, Netlify, or any static hosting. The PHP backend requires a PHP-compatible hosting platform with MySQL support.
+The site is hosted on **Firebase Hosting** at [luminal-systems-f6b13.web.app](https://luminal-systems-f6b13.web.app). The PHP backend requires a PHP-compatible hosting platform with MySQL support.
 
 ## License
 
