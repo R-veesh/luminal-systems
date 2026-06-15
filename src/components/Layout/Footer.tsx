@@ -18,7 +18,7 @@ export default function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <footer className="bg-dark text-white relative overflow-hidden">
+    <footer className="bg-bg-dark text-white relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary-darker/10 via-transparent to-accent-dark/5 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

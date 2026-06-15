@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../lib/firebase";
-import { ArrowLeft, CreditCard, User, Check } from "lucide-react";
+import { ArrowLeft, CreditCard } from "lucide-react";
 import md5 from "blueimp-md5";
 import { GlassCard } from "../components/ui/GlassCard";
 import ProgressSteps from "../components/ui/ProgressSteps";
@@ -21,7 +19,6 @@ export default function Checkout() {
   const planData = location.state as { plan: { id: string; name: string; monthlyPrice: number; yearlyPrice: number }; yearly: boolean } | null;
 
   const [form, setForm] = useState({ name: "", email: "", address: "", city: "", zip: "" });
-  const [createAccount, setCreateAccount] = useState(false);
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
@@ -42,22 +39,12 @@ export default function Checkout() {
     const orderId = "LUM-" + Date.now();
     const origin = window.location.origin;
 
-    if (createAccount && form.email) {
-      try {
-        const password = "Temp@" + Math.random().toString(36).slice(-8);
-        await createUserWithEmailAndPassword(auth, form.email, password);
-      } catch {
-        // Firebase registration failed silently
-      }
-    }
-
-    const accountCreated = !!(createAccount && form.email);
     sessionStorage.setItem("orderInfo", JSON.stringify({
       plan: plan.name,
       price,
       orderId,
       email: form.email,
-      accountCreated,
+      accountCreated: false,
     }));
 
     const amount = price.toFixed(2);
@@ -142,27 +129,6 @@ export default function Checkout() {
                   </motion.div>
                 ))}
               </div>
-
-              <motion.label variants={staggerItem} className="flex items-center gap-3 cursor-pointer mt-6">
-                <div
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${createAccount ? "bg-primary-darker border-primary-darker" : "border-gray-300"}`}
-                  onClick={() => setCreateAccount(!createAccount)}
-                >
-                  {createAccount && (
-                    <motion.span
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="text-white text-xs"
-                    >
-                      <Check size={12} />
-                    </motion.span>
-                  )}
-                </div>
-                <span className="text-sm text-gray-500">
-                  <User size={14} className="inline mr-1.5" />
-                  Create an account for later
-                </span>
-              </motion.label>
 
               <motion.button
                 variants={staggerItem}

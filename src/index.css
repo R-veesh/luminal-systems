@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #6FCF97;
   --color-primary-light: #A8E6C0;
@@ -11,6 +13,7 @@
   --color-surface: #FAFAFA;
   --color-light: #EEEEEE;
   --color-dark: #000000;
+  --color-bg-dark: #000000;
   --color-gray-50: #F9FAFB;
   --color-gray-100: #F3F4F6;
   --color-gray-200: #E5E7EB;
@@ -26,6 +29,23 @@
   --color-error: #EF4444;
   --font-heading: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  --color-surface: #0A0A12;
+  --color-light: #18181D;
+  --color-dark: #F3F4F6;
+  --color-bg-dark: #000000;
+  --color-gray-50: #12121E;
+  --color-gray-100: #1A1A26;
+  --color-gray-200: #22222F;
+  --color-gray-300: #2E2E3D;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #B8B8CC;
+  --color-gray-600: #D1D1E0;
+  --color-gray-700: #E5E5F0;
+  --color-gray-800: #F3F3FF;
+  --color-gray-900: #FFFFFF;
 }
 
 @layer base {
@@ -84,6 +104,11 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
+  .dark .glass {
+    background: rgba(18, 18, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
   .glass-dark {
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(16px);
@@ -91,11 +116,21 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
+  .dark .glass-dark {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
   .glass-primary {
     background: rgba(111, 207, 151, 0.15);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(111, 207, 151, 0.25);
+  }
+
+  .dark .glass-primary {
+    background: rgba(111, 207, 151, 0.1);
+    border: 1px solid rgba(111, 207, 151, 0.2);
   }
 
   .glow {
@@ -122,6 +157,11 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+  }
+
+  .dark .border-glow-card {
+    background: var(--card-bg, #18181D) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
   }
 }
 

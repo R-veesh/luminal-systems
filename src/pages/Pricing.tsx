@@ -36,7 +36,14 @@ const plans = [
   },
 ];
 
-const trustBadges = ["Company A", "Company B", "Company C", "Company D", "Company E", "Company F"];
+const trustBadges = [
+  { name: "TechVista", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=150&h=80&fit=crop" },
+  { name: "CloudNine", logo: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=150&h=80&fit=crop" },
+  { name: "DigiScale", logo: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=150&h=80&fit=crop" },
+  { name: "NexGen", logo: "https://images.unsplash.com/photo-1614332287894-ef635b5ae62e?w=150&h=80&fit=crop" },
+  { name: "Skyward", logo: "https://images.unsplash.com/photo-1611605698335-8b156f7f0d7e?w=150&h=80&fit=crop" },
+  { name: "DataPro", logo: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=150&h=80&fit=crop" },
+];
 
 const faqs = [
   { question: "Can I switch plans later?", answer: "Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle." },
@@ -159,11 +166,15 @@ export default function Pricing() {
             >
               {trustBadges.map((badge) => (
                 <motion.div
-                  key={badge}
+                  key={badge.name}
                   variants={staggerItem}
-                  className="h-12 px-8 bg-white/50 border border-white/30 rounded-xl flex items-center text-gray-400 text-sm font-medium glass hover:bg-white/70 transition-all"
+                  className="h-14 px-6 bg-white/50 border border-white/30 rounded-xl flex items-center glass hover:bg-white/70 transition-all"
                 >
-                  {badge}
+                  <img
+                    src={badge.logo}
+                    alt={badge.name}
+                    className="h-8 object-contain brightness-0 opacity-40"
+                  />
                 </motion.div>
               ))}
             </motion.div>

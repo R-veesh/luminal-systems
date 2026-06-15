@@ -1,16 +1,24 @@
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import Header from "./Header";
+import Navbar from "../hero/Navbar";
 import Footer from "./Footer";
 import { pageTransition } from "../../lib/animations";
+import { ThemeProvider, useTheme } from "../../context/ThemeContext";
 
-export default function Layout() {
+function LayoutContent() {
   const location = useLocation();
+  const isHome = location.pathname === "/";
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1 pt-16 md:pt-20">
+      <Navbar />
+      <main className={`flex-1 ${!isHome ? "pt-16 md:pt-20" : ""}`}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -24,5 +32,13 @@ export default function Layout() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function Layout() {
+  return (
+    <ThemeProvider>
+      <LayoutContent />
+    </ThemeProvider>
   );
 }

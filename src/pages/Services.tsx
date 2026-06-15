@@ -10,7 +10,7 @@ import {
   Palette,
   Rocket,
 } from "lucide-react";
-import { GlassCard } from "../components/ui/GlassCard";
+import BorderGlow from "../components/ui/BorderGlow";
 import SectionHeading from "../components/ui/SectionHeading";
 import { staggerContainer, staggerItem, fadeInUp } from "../lib/animations";
 import { AnimatedSection } from "../lib/animations-components";
@@ -20,6 +20,7 @@ const services = [
     icon: Globe,
     title: "Web Development",
     gradient: "from-blue-400 to-indigo-500",
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop",
     features: [
       "Custom React/Next.js applications",
       "Responsive, mobile-first design",
@@ -31,6 +32,7 @@ const services = [
     icon: ShoppingCart,
     title: "E-Commerce Solutions",
     gradient: "from-green-400 to-emerald-500",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
     features: [
       "Full e-commerce store setup",
       "Payment gateway integration",
@@ -42,6 +44,7 @@ const services = [
     icon: BarChart3,
     title: "Digital Strategy",
     gradient: "from-purple-400 to-pink-500",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
     features: [
       "SEO optimization & analytics",
       "Conversion rate optimization",
@@ -53,6 +56,7 @@ const services = [
     icon: Smartphone,
     title: "Mobile Optimization",
     gradient: "from-orange-400 to-red-500",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
     features: [
       "Progressive Web Apps (PWAs)",
       "Cross-platform compatibility",
@@ -111,27 +115,45 @@ export default function Services() {
         >
           {services.map((service) => (
             <motion.div key={service.title} variants={staggerItem}>
-              <GlassCard className="p-8 group h-full">
-                <div className={`w-14 h-14 bg-gradient-to-br ${service.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg`}>
-                  <service.icon className="text-white" size={26} />
+              <BorderGlow
+                backgroundColor="#ffffff"
+                glowColor="150 80 80"
+                borderRadius={16}
+                glowRadius={30}
+                glowIntensity={0.6}
+                fillOpacity={0.3}
+                colors={["#6FCF97", "#7C5CFC", "#A8E6C0"]}
+                className="h-full group [&_.border-glow-inner]:overflow-hidden"
+              >
+                <div className="h-full">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-8">
+                    <div className={`w-14 h-14 bg-gradient-to-br ${service.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg`}>
+                      <service.icon className="text-white" size={26} />
+                    </div>
+                    <h3 className="text-xl font-semibold text-dark mb-4">{service.title}</h3>
+                    <ul className="space-y-2.5 mb-6">
+                      {service.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2.5 text-gray-500 text-sm">
+                          <span className="w-1.5 h-1.5 bg-primary-darker rounded-full mt-2 shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center gap-1 text-primary-darker font-medium text-sm group/link"
+                    >
+                      Learn More
+                      <ArrowRight size={16} className="transition-transform group-hover/link:translate-x-1" />
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-dark mb-4">{service.title}</h3>
-                <ul className="space-y-2.5 mb-6">
-                  {service.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-gray-500 text-sm">
-                      <span className="w-1.5 h-1.5 bg-primary-darker rounded-full mt-2 shrink-0" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-1 text-primary-darker font-medium text-sm group/link"
-                >
-                  Learn More
-                  <ArrowRight size={16} className="transition-transform group-hover/link:translate-x-1" />
-                </Link>
-              </GlassCard>
+              </BorderGlow>
             </motion.div>
           ))}
         </motion.div>
@@ -150,7 +172,7 @@ export default function Services() {
                     } rounded-2xl flex items-center justify-center shadow-lg`}>
                       <step.icon className="text-white" size={28} />
                     </div>
-                    <span className="absolute -top-2 -right-2 w-7 h-7 bg-dark text-white rounded-full text-xs flex items-center justify-center font-bold shadow-lg">
+                    <span className="absolute -top-2 -right-2 w-7 h-7 bg-bg-dark text-white rounded-full text-xs flex items-center justify-center font-bold shadow-lg">
                       {i + 1}
                     </span>
                   </div>

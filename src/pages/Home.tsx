@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, Zap, Shield, TrendingUp, Star, Play } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
-import { GlassCard } from "../components/ui/GlassCard";
+import HeroSection from "../components/hero/HeroSection";
+import BorderGlow from "../components/ui/BorderGlow";
 import SectionHeading from "../components/ui/SectionHeading";
 import StatsCounter from "../components/ui/StatsCounter";
 import { staggerContainer, staggerItem, fadeInLeft, fadeInRight } from "../lib/animations";
@@ -14,18 +15,21 @@ const features = [
     title: "Lightning Fast",
     desc: "Optimized performance ensures your site loads in under 2 seconds, keeping visitors engaged.",
     color: "from-yellow-400 to-orange-500",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
   },
   {
     icon: Shield,
     title: "Secure by Design",
     desc: "Enterprise-grade security baked into every layer of your application from day one.",
     color: "from-green-400 to-emerald-500",
+    image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=600&h=400&fit=crop",
   },
   {
     icon: TrendingUp,
     title: "Conversion Focused",
     desc: "Data-driven UI/UX decisions that turn casual browsers into loyal customers.",
     color: "from-blue-400 to-indigo-500",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
   },
 ];
 
@@ -111,7 +115,7 @@ function ScrollVideo() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-dark"
+          className="relative rounded-2xl overflow-hidden shadow-2xl aspect-video bg-bg-dark"
         >
           <video
             ref={videoRef}
@@ -122,7 +126,7 @@ function ScrollVideo() {
           />
 
           {!playing ? (
-            <div className="absolute inset-0 flex items-center justify-center bg-dark/50">
+            <div className="absolute inset-0 flex items-center justify-center bg-bg-dark/50">
               <div className="relative flex flex-col items-center gap-2">
                 <svg width="112" height="112" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
                   <circle
@@ -139,7 +143,7 @@ function ScrollVideo() {
                     strokeLinecap="round"
                     strokeDasharray={circleLen}
                     strokeDashoffset={circleLen * 0.75}
-                    style={{ rotate: -90, transformOrigin: "center" }}
+                    style={{ rotate: "-90deg", transformOrigin: "center" }}
                     animate={{ strokeDashoffset: [circleLen * 0.75, circleLen * 0.65] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                   />
@@ -178,7 +182,7 @@ function ScrollVideo() {
                     strokeLinecap="round"
                     strokeDasharray={2 * Math.PI * 17}
                     strokeDashoffset={2 * Math.PI * 17 * (1 - progress)}
-                    style={{ rotate: -90, transformOrigin: "center" }}
+                    style={{ rotate: "-90deg", transformOrigin: "center" }}
                   />
                 </svg>
               </div>
@@ -196,119 +200,28 @@ const testimonials = [
     author: "Sarah Chen",
     role: "CEO, TechVista",
     rating: 5,
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
   },
   {
     quote: "The team's attention to detail and technical expertise is unmatched. Highly recommend.",
     author: "Marcus Rivera",
     role: "CTO, CloudNine",
     rating: 5,
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
   },
   {
     quote: "From concept to launch, they delivered a world-class product on time and on budget.",
     author: "Aisha Patel",
     role: "Founder, DigiScale",
     rating: 5,
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
   },
 ];
 
 export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-
   return (
     <div>
-      <section ref={heroRef} className="relative overflow-hidden min-h-screen flex items-center">
-        <motion.div style={{ y: heroY }} className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-dark via-dark/95 to-dark" />
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary rounded-full blur-[128px]" />
-            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent rounded-full blur-[128px]" />
-          </div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(111,207,151,0.1)_0%,transparent_50%)]" />
-        </motion.div>
-
-        <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-dark/20 pointer-events-none" />
-
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-40 w-full"
-        >
-          <div className="max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center gap-2 glass-dark rounded-full px-4 py-1.5 mb-8"
-            >
-              <span className="w-2 h-2 bg-primary rounded-full animate-pulse-glow" />
-              <span className="text-xs text-gray-300 font-medium">Trusted by 500+ companies worldwide</span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-6"
-            >
-              Illuminate Your Digital{" "}
-              <span className="text-gradient">Future</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-lg sm:text-xl text-gray-400 mb-10 leading-relaxed max-w-2xl"
-            >
-              Luminal Systems delivers cutting-edge web solutions that transform
-              businesses. From stunning marketing sites to full e-commerce
-              ecosystems — we build what you need to grow.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex flex-wrap gap-4"
-            >
-              <Link
-                to="/pricing"
-                className="group inline-flex items-center gap-2 bg-primary-darker text-white px-8 py-4 rounded-xl font-medium hover:bg-primary-dark transition-all shadow-lg shadow-primary-darker/50 hover:shadow-xl hover:shadow-primary-darker/30"
-              >
-                View Plans
-                <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 glass-dark text-white px-8 py-4 rounded-xl font-medium border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all"
-              >
-                Get in Touch
-              </Link>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-6 h-10 border-2 border-gray-500 rounded-full flex justify-center pt-2"
-          >
-            <div className="w-1 h-2 bg-gray-400 rounded-full" />
-          </motion.div>
-        </motion.div>
-      </section>
+      <HeroSection />
 
       {/* Scroll-driven promo video — place promo.mp4 in public/videos/ */}
       <ScrollVideo />
@@ -328,13 +241,31 @@ export default function Home() {
         >
           {features.map((feature) => (
             <motion.div key={feature.title} variants={staggerItem}>
-              <GlassCard className="p-8 h-full">
-                <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-5 shadow-lg`}>
-                  <feature.icon className="text-white" size={26} />
+              <BorderGlow
+                backgroundColor="#ffffff"
+                glowColor="150 80 80"
+                borderRadius={16}
+                glowRadius={30}
+                glowIntensity={0.6}
+                fillOpacity={0.3}
+                colors={["#6FCF97", "#7C5CFC", "#A8E6C0"]}
+                className="h-full group [&_.border-glow-inner]:overflow-hidden"
+              >
+                <div className="h-full">
+                  <img
+                    src={feature.image}
+                    alt={feature.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-8">
+                    <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-5 shadow-lg`}>
+                      <feature.icon className="text-white" size={26} />
+                    </div>
+                    <h3 className="text-xl font-semibold text-dark mb-3">{feature.title}</h3>
+                    <p className="text-gray-500 leading-relaxed">{feature.desc}</p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-dark mb-3">{feature.title}</h3>
-                <p className="text-gray-500 leading-relaxed">{feature.desc}</p>
-              </GlassCard>
+              </BorderGlow>
             </motion.div>
           ))}
         </motion.div>
@@ -387,16 +318,12 @@ export default function Home() {
           </AnimatedSection>
 
           <AnimatedSection variant={fadeInRight}>
-            <div className="glass rounded-2xl p-1">
-              <div className="bg-gradient-to-br from-primary/10 via-accent/5 to-primary-dark/10 rounded-xl p-8">
-                <div className="grid grid-cols-2 gap-4">
-                  {["React", "TypeScript", "Node.js", "Firebase"].map((tech) => (
-                    <div key={tech} className="glass rounded-xl px-4 py-3 text-center text-sm font-medium text-dark">
-                      {tech}
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="glass rounded-2xl overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=700&h=500&fit=crop"
+                alt="Dashboard mockup"
+                className="w-full h-full object-cover"
+              />
             </div>
           </AnimatedSection>
         </div>
@@ -418,23 +345,36 @@ export default function Home() {
           >
             {testimonials.map((t) => (
               <motion.div key={t.author} variants={staggerItem}>
-                <GlassCard className="p-8 h-full flex flex-col">
-                  <div className="flex gap-1 mb-5">
-                    {Array.from({ length: t.rating }).map((_, i) => (
-                      <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 leading-relaxed text-sm mb-6 flex-1">"{t.quote}"</p>
-                  <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-sm font-bold">
-                      {t.author.split(" ").map(n => n[0]).join("")}
+                <BorderGlow
+                  backgroundColor="#ffffff"
+                  glowColor="260 80 80"
+                  borderRadius={16}
+                  glowRadius={30}
+                  glowIntensity={0.6}
+                  fillOpacity={0.3}
+                  colors={["#7C5CFC", "#A78BFA", "#6FCF97"]}
+                  className="h-full"
+                >
+                  <div className="p-8 h-full flex flex-col">
+                    <div className="flex gap-1 mb-5">
+                      {Array.from({ length: t.rating }).map((_, i) => (
+                        <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
+                      ))}
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold text-dark">{t.author}</p>
-                      <p className="text-xs text-gray-400">{t.role}</p>
+                    <p className="text-gray-600 leading-relaxed text-sm mb-6 flex-1">"{t.quote}"</p>
+                    <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+                      <img
+                        src={t.avatar}
+                        alt={t.author}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div>
+                        <p className="text-sm font-semibold text-dark">{t.author}</p>
+                        <p className="text-xs text-gray-400">{t.role}</p>
+                      </div>
                     </div>
                   </div>
-                </GlassCard>
+                </BorderGlow>
               </motion.div>
             ))}
           </motion.div>

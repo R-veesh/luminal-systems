@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Lightbulb, Users, Award, ArrowRight } from "lucide-react";
+import { Lightbulb, Users, Award, ArrowRight } from "lucide-react";
 import { GlassCard } from "../components/ui/GlassCard";
 import SectionHeading from "../components/ui/SectionHeading";
 import StatsCounter from "../components/ui/StatsCounter";
@@ -58,15 +58,13 @@ export default function About() {
           </AnimatedSection>
 
           <AnimatedSection variant={fadeInRight}>
-            <div className="glass rounded-2xl p-8 flex items-center justify-center min-h-[300px] relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/10 to-primary-dark/20" />
-              <motion.div
-                animate={{ scale: [1, 1.05, 1], rotate: [0, 5, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative z-10"
-              >
-                <Target size={80} className="text-primary-darker/40" />
-              </motion.div>
+            <div className="glass rounded-2xl overflow-hidden min-h-[300px] relative">
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop"
+                alt="Luminal Systems team"
+                className="w-full h-full object-cover absolute inset-0"
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-accent/20 to-primary-dark/30" />
             </div>
           </AnimatedSection>
         </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, ChevronDown, CheckCircle, Clock, Mail, Inbox } from "lucide-react";
+import { ChevronDown, CheckCircle, Clock, Mail, Inbox } from "lucide-react";
 import { GlassCard } from "../components/ui/GlassCard";
 import SectionHeading from "../components/ui/SectionHeading";
 import LoadingSpinner from "../components/ui/LoadingSpinner";

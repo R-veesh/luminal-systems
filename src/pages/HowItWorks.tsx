@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, FileText, Code, Rocket, ArrowRight } from "lucide-react";
+import BorderGlow from "../components/ui/BorderGlow";
 import { fadeInLeft } from "../lib/animations";
 import { AnimatedSection } from "../lib/animations-components";
 
@@ -10,24 +11,28 @@ const steps = [
     title: "1. Discovery Call",
     desc: "We start with a no-obligation conversation to understand your vision, goals, and challenges.",
     gradient: "from-blue-400 to-indigo-500",
+    image: "https://images.unsplash.com/photo-1552581234-26160f608093?w=600&h=400&fit=crop",
   },
   {
     icon: FileText,
     title: "2. Proposal & Planning",
     desc: "You receive a detailed project roadmap, timeline, and transparent pricing with no hidden fees.",
     gradient: "from-purple-400 to-pink-500",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop",
   },
   {
     icon: Code,
     title: "3. Design & Build",
     desc: "Our team brings your project to life with iterative development, regular updates, and your feedback at every stage.",
     gradient: "from-green-400 to-emerald-500",
+    image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&h=400&fit=crop",
   },
   {
     icon: Rocket,
     title: "4. Launch & Grow",
     desc: "We deploy your solution, monitor performance, and provide ongoing support to ensure long-term success.",
     gradient: "from-orange-400 to-red-500",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
   },
 ];
 
@@ -68,9 +73,29 @@ export default function HowItWorks() {
                     </div>
                     <h3 className="text-xl font-semibold text-dark">{step.title}</h3>
                   </div>
-                  <div className="hidden md:block flex-1 glass rounded-2xl p-8 transition-all group-hover:shadow-xl">
-                    <h3 className="text-xl font-semibold text-dark mb-3">{step.title}</h3>
-                    <p className="text-gray-500 leading-relaxed max-w-xl">{step.desc}</p>
+                  <div className="hidden md:block flex-1">
+                    <BorderGlow
+                      backgroundColor="#ffffff"
+                      glowColor="150 80 80"
+                      borderRadius={16}
+                      glowRadius={30}
+                      glowIntensity={0.6}
+                      fillOpacity={0.3}
+                      colors={["#6FCF97", "#7C5CFC", "#A8E6C0"]}
+                      className="[&_.border-glow-inner]:overflow-hidden"
+                    >
+                      <div>
+                        <img
+                          src={step.image}
+                          alt={step.title}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="p-8">
+                          <h3 className="text-xl font-semibold text-dark mb-3">{step.title}</h3>
+                          <p className="text-gray-500 leading-relaxed max-w-xl">{step.desc}</p>
+                        </div>
+                      </div>
+                    </BorderGlow>
                   </div>
                   <p className="text-gray-500 leading-relaxed md:hidden">{step.desc}</p>
                 </div>

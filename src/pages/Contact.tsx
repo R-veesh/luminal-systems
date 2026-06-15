@@ -203,12 +203,18 @@ export default function Contact() {
             </AnimatedSection>
 
             <AnimatedSection variant={fadeInRight} delay={0.1}>
-              <GlassCard className="p-6 h-48 flex items-center justify-center">
-                <div className="text-center text-gray-400">
-                  <MapPin size={32} className="mx-auto mb-2 text-primary-darker/30" />
-                  <p className="text-sm font-medium">Colombo, Sri Lanka</p>
-                  <p className="text-xs">Map Integration</p>
-                </div>
+              <GlassCard className="relative p-0 overflow-hidden h-64 sm:h-72">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d985.8557211618257!2d80.49127500000002!3d8.746221!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3afc151b2b9840f3%3A0x8b5553772ac2328c!2sPrime%20One%20Global%20(PVT)%20LTD!5e0!3m2!1sen!2sus!4v1781495372519!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Google Maps"
+                  className="absolute inset-0"
+                />
               </GlassCard>
             </AnimatedSection>
           </div>
