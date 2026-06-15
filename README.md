@@ -122,8 +122,6 @@ src/
 ![Login](screen_shot/Screenshot%202026-06-15%20113105.png)
 ![Sign Up](screen_shot/Screenshot%202026-06-15%20113113.png)
 
-> Replace these placeholders with actual page screenshots (1280×800 PNG) in the `screenshots/` directory.
-
 ## Deployment
 
 The site is hosted on **Firebase Hosting** at [luminal-systems-f6b13.web.app](https://luminal-systems-f6b13.web.app). The PHP backend requires a PHP-compatible hosting platform with MySQL support.
