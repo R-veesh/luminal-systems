@@ -113,7 +113,7 @@ src/
 
 ## Screenshots
 
-![Home](screen_shot/Screenshot%202026-06-15%20113020.pngg)
+![Home](screen_shot/Screenshot%202026-06-15%20113020.png)
 ![About](screen_shot/Screenshot%202026-06-15%20113049.png)
 ![Services](screen_shot/Screenshot%202026-06-15%20113029.png)
 ![How It Works](screen_shot/Screenshot%202026-06-15%20113036.png)
