@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, CheckCircle, Clock, Mail, Inbox } from "lucide-react";
 import { GlassCard } from "../components/ui/GlassCard";
@@ -58,9 +59,9 @@ export default function MyMessages() {
           <Mail size={48} className="mx-auto mb-4 text-primary" />
           <h2 className="text-xl font-semibold mb-2">Sign in to view your messages</h2>
           <p className="text-gray-500 mb-4">Please sign in to see your submitted messages and replies.</p>
-          <a href="/login" className="inline-block bg-primary-darker text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-dark transition-colors">
+          <Link to="/login" className="inline-block bg-primary-darker text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-primary-dark transition-colors">
             Sign In
-          </a>
+          </Link>
         </GlassCard>
       </section>
     );
@@ -90,9 +91,9 @@ export default function MyMessages() {
               <Inbox size={48} className="mx-auto mb-4 text-gray-400" />
               <h3 className="text-lg font-semibold text-gray-600 mb-2">No messages yet</h3>
               <p className="text-gray-400 mb-4">You haven't submitted any contact messages yet.</p>
-              <a href="/contact" className="text-primary-darker font-medium hover:underline">
+              <Link to="/contact" className="text-primary-darker font-medium hover:underline">
                 Contact us →
-              </a>
+              </Link>
             </GlassCard>
           </motion.div>
         ) : (
